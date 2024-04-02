@@ -19,16 +19,23 @@ function Book(title, author, pages, read) {
 }
 
 function addBookToLibrary(title, author, pages, read) {
-  let book22 = new Book(title, author, pages, read);
-  myLibrary.push(book22);
+  let book = new Book(title, author, pages, read);
+  myLibrary.push(book);
   displaybook();
 }
 
 const book1 = new Book("Diary of a wimpy Kid", "Count Olaf", 100, "read");
 console.log(book1.info());
 
-addBookToLibrary("ashu", "liya", 23, true);
-addBookToLibrary("2 states", "chetan bhagat", 260, false);
+addBookToLibrary("Diary of a wimpy Kid", "Jeff Kinney", 100, true);
+addBookToLibrary("To Kill a Mockingbird", "Harper Lee", 324, false);
+addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", 214, true);
+addBookToLibrary(
+  "Harry Potter and the Philosopher's Stone",
+  "J.K. Rowling",
+  336,
+  true
+);
 
 console.log(myLibrary);
 
@@ -36,7 +43,7 @@ function displaybook() {
   const booklist = document.querySelector(".section4");
   booklist.innerHTML = "";
   const headerRow = document.createElement("tr");
-  const headers = ["Title", "Author", "Pages", "Read"];
+  const headers = ["Title", "Author", "Pages", "Read", "Delete"];
   headers.forEach((headerText) => {
     const th = document.createElement("th");
     th.textContent = headerText;
@@ -44,10 +51,8 @@ function displaybook() {
   });
   booklist.appendChild(headerRow);
 
-  for (let book in myLibrary) {
+  myLibrary.forEach((thisbook, index) => {
     const bookrow = document.createElement("tr");
-
-    let thisbook = myLibrary[book];
 
     const title = document.createElement("td");
     title.innerHTML = thisbook.title;
@@ -62,15 +67,38 @@ function displaybook() {
     bookrow.appendChild(pages);
 
     const read = document.createElement("td");
-    if (thisbook.read == true) {
+    if (thisbook.read === true) {
       read.innerHTML = "Yes";
     } else {
       read.innerHTML = "No";
     }
+    read.addEventListener("click", () => {
+      if (read.innerHTML === "Yes") {
+        read.innerHTML = "No";
+      } else if (read.innerHTML === "No") {
+        read.innerHTML = "Yes";
+      }
+    });
     bookrow.appendChild(read);
 
+    const action = document.createElement("td");
+    const deletebutton = document.createElement("button");
+    deletebutton.innerHTML = "delete";
+    deletebutton.classList.add("delete-button");
+    deletebutton.addEventListener("click", () => {
+      deletebook(index);
+    });
+
+    action.appendChild(deletebutton);
+    bookrow.appendChild(action);
+
     booklist.appendChild(bookrow);
-  }
+  });
+}
+
+function deletebook(index) {
+  myLibrary.splice(index, 1);
+  displaybook();
 }
 
 let bookForm = document.querySelector(".bookform");

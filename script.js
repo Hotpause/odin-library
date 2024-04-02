@@ -67,18 +67,14 @@ function displaybook() {
     bookrow.appendChild(pages);
 
     const read = document.createElement("td");
-    if (thisbook.read === true) {
-      read.innerHTML = "Yes";
-    } else {
-      read.innerHTML = "No";
-    }
-    read.addEventListener("click", () => {
-      if (read.innerHTML === "Yes") {
-        read.innerHTML = "No";
-      } else if (read.innerHTML === "No") {
-        read.innerHTML = "Yes";
-      }
+    const readButton = document.createElement("button");
+    readButton.textContent = thisbook.read ? "Yes" : "No";
+    readButton.classList.add("read-button");
+    readButton.addEventListener("click", () => {
+      thisbook.read = !thisbook.read; // Toggle the read status
+      readButton.textContent = thisbook.read ? "Yes" : "No";
     });
+    read.appendChild(readButton);
     bookrow.appendChild(read);
 
     const action = document.createElement("td");
